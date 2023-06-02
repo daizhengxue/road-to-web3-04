@@ -11,26 +11,31 @@ const Home = () => {
   const fetchNFTs = async() => {
     let nfts; 
     console.log("fetching nfts");
-    const api_key = "your api"
-    const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${api_key}/getNFTs/`;
+    const api_key = "VsnAcFYVWP8ZgLfnMvAiZpI2CfUfimvM"
+    const options = {method: 'GET', headers: {accept: 'application/json', 'x-api-key': 'demo'}};
+    // fetch('https://api.chainbase.online/v1/account/nfts?chain_id=1&address=0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045&page=1&limit=20', options)
+    const baseURL = '/api/nfts'
+    // const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${api_key}/getNFTs/`;
     var requestOptions = {
-        method: 'GET'
+        method: 'GET',
+        headers: {accept: 'application/json', 'x-api-key': 'demo'}
       };
      
     if (!collection.length) {
     
-      const fetchURL = `${baseURL}?owner=${wallet}`;
+      // const fetchURL = `${baseURL}?owner=${wallet}`;
+      const fetchURL = `${baseURL}?chain_id=1&address=${wallet}`;
   
       nfts = await fetch(fetchURL, requestOptions).then(data => data.json())
     } else {
       console.log("fetching nfts for collection owned by address")
-      const fetchURL = `${baseURL}?owner=${wallet}&contractAddresses%5B%5D=${collection}`;
+      const fetchURL = `${baseURL}?owner=${wallet}&contract_address=${collection}`;
       nfts= await fetch(fetchURL, requestOptions).then(data => data.json())
     }
   
     if (nfts) {
       console.log("nfts:", nfts)
-      setNFTs(nfts.ownedNfts)
+      setNFTs(nfts.data)
     }
   }
   
@@ -39,7 +44,7 @@ const Home = () => {
       var requestOptions = {
         method: 'GET'
       };
-      const api_key = "your api"
+      const api_key = "VsnAcFYVWP8ZgLfnMvAiZpI2CfUfimvM"
       const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${api_key}/getNFTsForCollection/`;
       const fetchURL = `${baseURL}?contractAddress=${collection}&withMetadata=${"true"}`;
       const nfts = await fetch(fetchURL, requestOptions).then(data => data.json())
